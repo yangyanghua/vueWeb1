@@ -1,0 +1,600 @@
+<template>
+	<div class="main commodityAdd">
+		 <!--面包屑-->
+      <div class="crumbs">
+        <!-- <el-breadcrumb-item>{{ editStatus?'编辑':'新增' }}运费模板</el-breadcrumb-item> -->
+        促销管理
+      </div>
+      <!-- / 面包屑-->
+      <div class="subject">
+      	<div class="filter_query mat20">
+      		
+	    <div class="form" >
+	    	<el-form ref="form" :model="form" :rules="rules2" label-width="100px">
+	    		<el-form-item label="活动类型：">
+	            	{{active}}
+          		</el-form-item>
+	    		<el-form-item prop="ruleName" label="活动名称：" required>
+	            	 <el-input v-model="form.name" placeholder="30个字符以内"></el-input>
+          		</el-form-item>
+          		<el-form-item label="优惠方式：" size="medium" >
+                    <el-select v-model="form.promoMethod" placeholder="全部" style="width:250px;">
+                    <el-option label="减现金" value="JXJ"></el-option>
+                    <el-option label="打折扣" value="DZK"></el-option>
+                    <el-option label="包邮" value="BY"></el-option>
+                    </el-select>          
+                </el-form-item> 
+                <el-form-item label="活动时间：" required>  <!--:error="errorMag"-->
+	                <el-form-item prop="onLineStart" style="float: left;">
+	                  <el-date-picker :picker-options="pickerBeginDateAfter" class="mgr10" v-model="form.effectiveFrom" type="datetime"
+	                    placeholder="开始日期">
+	                  </el-date-picker>
+	                </el-form-item>
+	          		<el-form-item style="float: left; margin-right:15px;">至</el-form-item>
+	                <el-form-item prop="onLineEnd" style="float: left;">
+	                  <el-date-picker :picker-options="pickerBeginDateAfter" class="mgr10" v-model="form.effectiveTo" type="datetime"
+	                    placeholder="结束日期">
+	                  </el-date-picker>
+	                </el-form-item>
+            </el-form-item>
+            <el-form-item label="活动说明：" prop="desc">
+			    <el-input type="textarea" v-model="form.content"></el-input>
+			</el-form-item>
+		       
+					<table class="table-strip-ls" >
+				        <tbody>
+				          <tr v-for="(item,index) in form.ruleItem " >
+			          		<td>
+			          			<el-checkbox class="sp_left " v-model="item.checked">包邮</el-checkbox>
+			          			<span class="sp_left p_mat10" v-if="item.checked">
+			          				<el-button type="text" class="btn-handle" @click="editArea(index,item.id)"> 选择不包邮地区</el-button>
+			          			</span>
+			          			<span class="sp_left p_margin10" v-if="item.showName!==''">({{item.showName}})</span>
+			          		</td>
+			          		<td width="300">单笔订单满<el-input size="mini" class="input_mini" v-model="item.baseprice" placeholder=""></el-input><i>{{($route.query.type=='3'||$route.query.type=='5')?'件':'元'}}</i>   , </td>
+			          		<td width="300" v-if="form.promoMethod!=='BY'">减<el-input size="mini" class="input_mini" v-model="item.increaseunit" placeholder=""></el-input>{{form.promoMethod=='DZK'?'折':'元'}}</td>
+			          		<td width="90" v-show="form.ruleItem.length!==1">
+			          			<el-button type="text" class="btn-handle" @click="deleteArea(index)"> 删除</el-button>
+            				</td>
+
+				          	</tr>
+				        </tbody>
+					</table>
+					<div v-show="errorFee" class="el-form-item__error">
+	                  {{errorFee}}
+	            	</div>
+				<div class="add-area" style="padding-left:20px;">
+					<i class="el-icon-plus"></i>
+					<el-button type="text" class="btn-handle p_marl10" @click="addArea"> 添加更多优惠层级</el-button>[注：“优惠条件”必须逐级递增]
+				</div>
+				<el-form-item style="padding-bottom:20px;">
+		            <el-button type="primary" @click="save" >保存</el-button>
+		            <el-button @click="$router.go(-1)">取消</el-button>
+		        </el-form-item>	
+	    	</el-form>
+	    </div>
+      	</div>
+      	
+      </div>
+		
+	<el-dialog title="提示" :visible.sync="dialogVisible" width="70%" :before-close="handleClose">
+		<div class="checkBox">
+			<ul class="checkList" v-for="(vitem,areaIndex) in data">
+				<li style="padding: 4px;width: 148px;"><el-checkbox :indeterminate="vitem.isIndeterminate" @change="onAreaChange(areaIndex,vitem.checkAll)" v-model="vitem.checkAll">{{vitem.name}}</el-checkbox></li>
+				<li v-for="(pritem,index) in vitem.provinces">
+				<div class="checkBoxItem" :class="{'active':pritem.active}" >
+				  <el-checkbox :indeterminate="pritem.isIndeterminate" :title="pritem.provincename"  v-model="pritem.checkAll" @change="handleCheckAllChange(areaIndex,index,pritem.checkAll,false)">{{pritem.provincename}}</el-checkbox>
+				  <div style="margin: 5px 0;"></div>
+				  <span class="optBtn" :class="{'active':pritem.active}" @click="clickoptBtn(areaIndex,index)">▼</span>
+				  <el-checkbox-group v-model="pritem.checkedCities"  @change="handleCheckedCitiesChange(areaIndex,index)">
+				    <el-checkbox v-for="city in pritem.cities" :title="city.cityname" :label="city.cityid" :key="city.cityid">{{city.cityname}}
+				    </el-checkbox>
+				  </el-checkbox-group>			
+				</div>
+				</li>
+			</ul>
+		</div>		
+  		<span slot="footer" class="dialog-footer">
+    		<el-button @click="dialogVisible = false">取 消</el-button>
+   	 		<el-button type="primary" @click="comfirmCities">确 定</el-button>
+  		</span>
+	</el-dialog>
+	
+	</div>
+</template>
+<script>
+import {getTocity} from '../../service.js';
+import * as Service from '@/common/service/logistics/index.js';	
+
+	
+	export default {
+		data () {
+			return{
+				active:'',
+				dialogVisible:false,
+				areaEditingItemIndex:0,		// 记录是哪个item(下标)在编辑区域
+		        checkAll: false,
+		        isIndeterminate:false,
+		        data:[],
+				form:{
+					name:'',
+					promoMethod:'',
+					effectiveFrom:'',
+					ruleItem:[{
+						checked:false,
+		                "baseunit":"1.00",
+		                "baseprice":"10.00",
+		                "increaseunit":"1.00",
+		                "increaseprice":"6.00",
+		                "isDefault":"Y",
+		                "showName":"",
+		                "cityIds":""
+					}],
+					
+				},
+				editStatus: false,
+				dateType:'P',
+				errorDefaultFee:'',
+				effectiveTo:'',
+				errorFee:'',
+				rules2: {
+		          	ruleName: [
+			            { required: true, message: '请输入模板名称', trigger: 'blur,change' }
+			          ],
+			        type: [
+			            { required: true, message: '请选择计费方式', trigger: 'blur,change' }
+			          ]
+		        }
+			}
+		},
+	    methods: {
+	    	checkFee() {
+	    		let item = this.form.ruleItem[0];
+	    		if(item.baseunit === ''
+	    		|| item.baseprice === ''
+	    		|| item.increaseunit === ''
+	    		|| item.increaseprice === ''){
+	    			this.errorDefaultFee = '请填写完整默认运费';
+	    			return false;
+	    		}else if(Number(item.baseunit) <= 0
+			    		|| Number(item.baseprice) <= 0
+			    		|| Number(item.increaseunit) <= 0
+			    		|| Number(item.increaseprice) <= 0){
+			    			this.errorDefaultFee = '请填写正确的数字';
+			    			return false;
+			    }else{
+	    			this.errorDefaultFee = '';
+	    		}
+	    		
+	    		for(var i=0; i<this.form.ruleItem.length; i++){
+	    			if(i>0){ // 从第二次开始
+	    				let item = this.form.ruleItem[i];
+	    				if(item.baseunit === ''
+			    		|| item.baseprice === ''
+			    		|| item.increaseunit === ''
+			    		|| item.increaseprice === ''){
+			    			this.errorFee = '请填写完整运费项';
+			    			return false;
+			    		}else if(item.cityIds === ''){
+			    			this.errorFee = '请编辑【运送到】的区域';
+			    			return false;
+			    		}else if(Number(item.baseunit) <= 0
+			    		|| Number(item.baseprice) <= 0
+			    		|| Number(item.increaseunit) <= 0
+			    		|| Number(item.increaseprice) <= 0){
+			    			this.errorFee = '请填写正确的数字';
+			    			return false;
+			    		}else{
+			    			this.errorFee = '';
+			    		}
+	    			}
+	    		}
+	    		
+				return true;
+			},
+	    	addArea(){
+	    		this.form.ruleItem.push({
+                "id":'',
+                "ruleId":'',
+                "baseunit":"",
+                "baseprice":"",
+                "increaseunit":"",
+                "increaseprice":"",
+                "isDefault":"N",
+                "showName":"",
+                "cityIds":""
+            	},)	
+	    	},
+	    	
+	    	editArea(index,id){
+	    		this.dialogVisible=true;
+	    		this.areaEditingItemIndex = index;
+	    		if(!id){	// id 为空是新建，不用 load 数据
+	    			return;
+	    		}
+	    		let params = {
+		              id:id
+		          };
+		      	Service.templateItemById(params).then(res=>{
+		      		let areaIndex = 0;
+					this.data.forEach((item)=>{
+						item.provinces.forEach(function(item2){
+							res.provinces.forEach(function(item3){
+								if(item2.provinceid==item3.provinceid){
+									item2.checkAll = item3.cityTotal==item3.cities.length;
+									item2.isIndeterminate=!item2.checkAll;
+									item3.cities.forEach(function(city){
+										item2.checkedCities.push(city.cityid);	
+									})
+								}
+							})
+						})
+						this.updateAreaCheckState(areaIndex++);
+		      		})
+		      	})
+	    	},
+	    	deleteArea(index){
+	    		this.form.ruleItem.splice(index,1)
+	    	},
+	    	clickoptBtn(areaIndex,index){
+	    		this.data[areaIndex].provinces[index].active=!this.data[areaIndex].provinces[index].active;
+	    	},
+	    	onAreaChange(areaIndex,areaCheckAll){
+	    		let provinceIndex = 0;
+	    		console.time('计时器1');
+	    		this.data[areaIndex].provinces.forEach((item)=>{
+		    		this.handleCheckAllChange(areaIndex,provinceIndex++,areaCheckAll,true);
+	    		})
+	    		
+	    		// 异步线程钩选市复选框
+	    		if(areaCheckAll){
+	    			setTimeout(()=>{ // 异步调用减少耗时
+	    				this.checkAllAreaCities(areaIndex);
+	    			},1)
+	    		}
+	    		
+	    		// 修改大区选中状态
+				this.updateAreaCheckState(areaIndex);
+				console.timeEnd('计时器1');
+	    	},
+	    	// 钩选某大区下的所有市复选框
+	    	// areaIndex：大区下标
+	    	checkAllAreaCities(areaIndex){
+	    		let index = 0;
+	    		this.data[areaIndex].provinces.forEach((item)=>{
+		        	this.data[areaIndex].provinces[index].cities.forEach((item)=>{
+		        		this.data[areaIndex].provinces[index].checkedCities.push(item.cityid);
+		        	})
+		        	index++;
+	    		})
+	    	},
+	    	// 返回大区下所有省的选中状态: 0全选中 1全不选中 -1部分选中
+	    	// areaIndex: 大区下标
+	    	provinceCheckState(areaIndex){
+	    		let isPart = false;
+	    		let checkNum = 0;
+	    		this.data[areaIndex].provinces.forEach((item)=>{
+		    		if(item.checkAll){
+		    			checkNum++;
+		    		}else{
+		    			if(item.isIndeterminate){ // 肯定是部分了
+//		    				console.log(areaIndex+' part');
+//		    				return -1; // 这个居然跳不出去
+							isPart = true;
+		    			}else{
+		    				
+		    			}
+		    		}
+	    		})
+	    		
+	    		if(isPart){
+	    			return -1;
+	    		}
+	    		
+	    		if(0==checkNum){
+//	    			console.log(areaIndex+' none');
+	    			return 0;
+	    		}
+	    		else if(checkNum==this.data[areaIndex].provinces.length){
+//	    			console.log(areaIndex+' all');
+	    			return 1;
+	    		}
+	    		// else (checkNum>0)
+//  			console.log(areaIndex+' part');
+    			return -1;
+	    	},
+	    	// areaIndex：大区选中的下标
+	    	// index：选中省的下标
+	    	// isInForEach：是否是在 for 循环中被调用
+	    	// checkAll：当前状态是否被选中
+	      handleCheckAllChange(areaIndex,index,checkAll,isInForEach) {
+			this.data[areaIndex].provinces[index].checkAll = checkAll;	
+	        if(checkAll){
+	        	if(!isInForEach){	// for 循环中在外面改，里面不改，增加运行效率
+	        	    setTimeout(()=>{ // 异步调用减少耗时
+			        	this.data[areaIndex].provinces[index].cities.forEach((item)=>{
+			        		this.data[areaIndex].provinces[index].checkedCities.push(item.cityid);
+			        	})
+		        	},1);
+	        	}
+	        }else{
+	        	this.data[areaIndex].provinces[index].checkedCities=[];
+	        	if(!isInForEach){
+	        		this.data[areaIndex].provinces[index].isIndeterminate = false;
+	        	}
+	        }
+	        if(!isInForEach){ // 在循环中时肯定在外面判断了，里面就不用判断
+	        	this.updateAreaCheckState(areaIndex);	
+	        }
+	      },
+	      // 根据当前省的选中状态修改大区的选中状态
+	      // checkAll：当前按钮是选中还是不选中
+	      updateAreaCheckState(areaIndex){
+	      		let result = this.provinceCheckState(areaIndex); 
+	      		if(-1==result){
+		    		this.data[areaIndex].isIndeterminate = true;
+		    		this.data[areaIndex].checkAll = false;
+	    		}else{
+	    			this.data[areaIndex].isIndeterminate = false;
+	    			if(1==result){
+	    				this.data[areaIndex].checkAll = true;
+	    			}else{
+	    				this.data[areaIndex].checkAll = false;
+	    			}
+	    		}
+	      },
+      handleCheckedCitiesChange(areaIndex,index) {
+        this.data[areaIndex].provinces[index].checkAll =  this.data[areaIndex].provinces[index].checkedCities.length === this.data[areaIndex].provinces[index].cities.length;
+        if(this.data[areaIndex].provinces[index].checkAll){
+        	this.data[areaIndex].provinces[index].isIndeterminate = false;
+        }else{
+        	this.data[areaIndex].provinces[index].isIndeterminate = this.data[areaIndex].provinces[index].checkedCities.length > 0 &&  this.data[areaIndex].provinces[index].checkedCities.length < this.data[areaIndex].provinces[index].cities.length;	
+        }
+        
+        // 改大区选中状态
+		this.updateAreaCheckState(areaIndex);
+      },
+      save(){
+      	if(!this.checkForm()){
+      		return;
+      	}
+      	if(!this.checkFee()){
+      		return;
+      	}
+		let params = this.form;
+		if( !this.$route.query.id ){
+      		Service.templateAdd(params).then(res=>{
+	        	// alert('保存成功');
+	        	this.$router.push('/logistics/');
+        	})
+      	}else{
+      		Service.templateUpdate(params).then(res=>{
+	        	// alert('修改成功');
+	        	this.$router.push('/logistics/');
+        	})
+      	}
+      },
+      
+      // 确定选择区域
+      comfirmCities(){
+      	let arrCity = [];
+      	let arrName = '';
+      	this.data.forEach((item)=>{
+      		item.provinces.forEach((item1)=>{
+      			arrCity=arrCity.concat(item1.checkedCities);
+      			if(item1.checkedCities.length > 0){
+      				arrName = arrName+item1.provincename+' ';	
+      			}
+      		})
+      	})
+		this.form.ruleItem[this.areaEditingItemIndex].cityIds = arrCity.join(',');
+		this.form.ruleItem[this.areaEditingItemIndex].showName = arrName;
+		this.dialogVisible=false;
+      },
+      
+      
+      // 编辑时导入旧模板数据
+      loadEditData(){
+      	if( !this.$route.query.id ){
+      		return; // 新增不用处理
+      	}
+      	let params = {
+              id:this.$route.query.id
+          };
+      	Service.templategetById(params).then(res=>{
+      		this.form = res;
+      	})
+      },
+      checkForm() {
+            let result = false;
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    result = true;
+                } else {
+                    // console.log('error submit!!');
+                    return false;
+                }
+
+            });
+            return result;
+        },
+      _getTocity(){
+         getTocity().then(res => {
+			res.forEach(function(item,i){
+				item.isIndeterminate = false;
+				item.checkAll = false;
+				item.provinces.forEach(function(item1){
+					item1.active=false;
+					item1.checkAll=false;
+					item1.isIndeterminate=false;
+					item1.checkedCities=[];
+				})
+				
+			})
+			this.data = res;
+          }).catch(res => {
+            this.$message.error(res.message);
+          })      		
+      },      
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+      //判断在这之前的时间不能选
+        pickerBeginDateAfter: {
+          disabledDate: (time) => {
+            let beginDateVal = new Date().getTime() - 24 * 3600 * 1000;
+            return time.getTime() < beginDateVal;
+          }
+        },     
+			 	
+	},
+    mounted(){
+		this._getTocity();
+		this.loadEditData();
+		let type = this.$route.query.type;
+		if(type==1){
+			this.active = '满额优惠 (全店)'
+		} else if(type==2){
+			this.active = '满额优惠 (商品)'
+		}else if(type==3){
+			this.active = '	满件优惠 (商品)'
+		}else if(type==4){
+			this.active = '限时折扣'
+		}
+		else if(type==5){
+			this.active = '满件优惠 (全店)'
+		}
+    }						
+}
+</script>
+<style lang="scss" scoped>
+	.freightRules{
+		background:#FFF5F3;
+		padding:14px 15px;
+		line-height:24px;
+		margin-bottom:15px;
+		p{
+			font-weight:600;
+		}
+	}
+	.input_default{
+		width:85px;
+	}
+	.input_mini{
+		width:85px;
+		margin:0 10px;
+		
+	}
+	.table-strip-ls tbody .btn-handle{
+		color:#F26749;
+	}
+	.setUp{
+		font-size:14px;
+		padding-bottom:15px;
+	}
+	.table-strip-ls{
+		margin-bottom:15px;
+		font-size:14px;
+		border-top:1px solid #ddd;
+	}
+	.add-area{
+		margin-bottom:15px;
+	}
+	
+	.el-tree{
+		.is-focusable{
+			color: red !important;
+		}
+	}
+	
+	.checkList{
+		margin-bottom: 20px;
+		height: 30px;
+		width: 100%;
+		// width: 500px;
+		li{
+			height: 30px;
+			line-height: 30px;
+			float: left;
+			width: 120px;			
+			position: relative;
+			.el-checkbox + .el-checkbox{
+				margin-left: 0;
+			}
+			.checkBoxItem{
+				width: 100%;
+				height: 30px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				background: white;
+				overflow: hidden;
+				box-sizing: border-box;
+				padding: 5px;
+				&.active{
+					width: 520px;
+					
+				z-index: 10000;	
+				border: 1px solid gainsboro;
+				box-shadow:0 1px 8px -2px #999999;
+				height: auto;						
+				}				
+			}
+			
+			.optBtn{
+				display: inline-block;
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				top: 2px;
+				right: 14px;
+				transition: all 0.3s;
+				text-align: center;
+				line-height: 33px;
+				cursor: pointer;
+				background: #FBFBFB;
+				z-index: 50;
+				&.active{
+					transform: rotateZ(180deg);
+				}
+				
+			}
+
+			.el-checkbox-group{
+				overflow: hidden;
+			}
+			.el-checkbox{
+				margin-right: 5px;
+				// width: 100%;
+				width: 120px;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;				
+			}
+		}
+	}
+	.form{
+		padding-top: 20px;
+		padding-left: 20px;
+		width:1000px;
+	}
+	.sp_left{
+		display: inline-block;
+	}
+	.p_margin10{
+		margin-left:70px;
+	}
+	.p_mat10{
+		margin-top: 10px;
+	}
+	.table-strip-ls .el-form-item__content{
+		line-height:normal;
+	}
+	.p_marl10{
+		margin-right: 10px;;
+	}
+</style>

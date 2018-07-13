@@ -1,0 +1,107 @@
+.table-strip-ls {
+//   width: 928px;
+  width: 100%;
+  border: 1px solid $color-split;
+  border-top:none;
+  text-align: center;
+  thead {
+
+      td {
+          // background-color: $color-bg-dialog;
+          border: 1px solid $color-split;
+          border-top:none;
+          color: $color-heavy;
+          font-size: $fontsize-normal;
+          font-weight: bold;
+          padding: 5px;
+          height: 50px;
+      }
+  }
+  tbody {
+      tr:nth-child(even) td {
+          // background-color: $color-split-form;
+      }
+      td {
+          height: 30px;
+          padding: 5px;
+          border: 1px solid $color-split;
+          background-color: #fff;
+          color: $color-normal;
+          font-size: $fontsize-normal;
+          &.h40 {
+              height: 40px;
+          }
+      }
+      .onSale,
+      .hasPass {
+          color: $color-pass;
+      }
+      .offSale,
+      .hasNotPass,
+      .isING {
+          color: $color-primary;
+      }
+      .toBeChecked,
+      .express {
+          color: $color-second;
+      }
+      .beChecking,
+      .unstart {
+          color: $color-warn;
+      }
+      .clearfs {
+          font-size: 0;
+      }
+      .toSplit,
+      .hasEnd {
+          color: $color-split-border;
+      }
+      .btnsplit {
+          display: inline-block;
+          width: 2px;
+          height: 10px;
+          background-color: $color-light;
+          margin-left: 5px;
+          margin-right: 5px;
+          vertical-align: middle;
+      }
+      .btn-handle {
+          display: inline-block;
+          width: 30px;
+          font-size: $fontsize-normal;
+          color: $color-heavy;
+          cursor: pointer;
+          &:hover {
+              color: $color-primary
+          }
+      }
+  }
+}
+
+.table-normal {
+  border: 1px solid $color-split;
+  thead {
+      tr {
+          height: 30px;
+      }
+      th {
+          height: 30px;
+          background-color: $color-split-form;
+          border: 1px solid $color-split;
+          color: $color-heavy;
+          font-size: $fontsize-normal;
+          font-weight: bold;
+      }
+  }
+  tbody {
+      td {
+          box-sizing: border-box;
+          padding-left: 5px;
+          padding-right: 5px;
+          border: 1px solid $color-split;
+          height: 30px;
+          color: $color-heavy;
+          font-size: $fontsize-normal;
+      }
+  }
+}

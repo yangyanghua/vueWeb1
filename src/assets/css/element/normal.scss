@@ -1,0 +1,209 @@
+.main{
+    .el-step.is-horizontal .el-step__line{
+        top: 21px;
+    }
+    .el-step__icon{
+        width: 44px;
+        height: 44px;
+    }
+    .el-step__title.is-process{
+        font-weight: normal;
+        color: $color-heavy;
+    }
+    .el-step__title.is-wait{
+        font-weight: normal;
+        // color: $color-light;
+    }
+    .el-breadcrumb{
+        line-height:55px;
+    }
+    /*页面 分页 共用样式*/
+    .el-pager li.active + li{
+        border-left:1px solid #ccc;
+    }
+    .el-pagination .btn-prev{
+      width:32px;
+      height:32px;
+      border:1px solid #ccc;
+      padding:0;
+      margin-right:5px;
+      border-radius: 2px;
+
+    }
+    .el-pagination .btn-next{
+      width:32px;
+      height:32px;
+      border:1px solid #ccc;
+      padding:0;
+      margin-right:5px;
+      border-radius: 2px;
+    }
+    .el-pager li{
+      width:32px;
+      height:32px;
+      border:1px solid #ccc;
+      text-align: center;
+      line-height:32px;
+      margin:0 5px;
+      border-radius: 2px;
+    }
+    .el-pager li.active{
+      background: #4DA9E4;
+      border-radius: 2px;
+      color:#fff;
+      border:none;
+    }
+    .el-pagination button.disabled{
+      width:32px;
+      height:32px;
+      border:1px solid #ccc;
+      padding:0;
+      margin-left:5px;
+      border-radius: 2px;
+    }
+    .el-pagination__jump{
+      margin-left:10px;
+      color: #999999;
+      height: 32px;
+    }
+    .el-pagination span:not([class*=suffix]), .el-pagination button{
+      height: 32px;
+      line-height:32px;
+    }
+    .el-pagination__editor.el-input .el-input__inner{
+      height: 32px;
+      width:35px;
+      border-radius: 2px;
+    }
+    .el-button--primary.is-plain:hover, .el-button--primary.is-plain:focus{
+          color: #4DA9E4;
+          background: #edf6fc;
+          border-color: #4DA9E4;
+    }
+    /*多张图片样式修改*/
+  //   .el-upload--picture-card{
+  //   font-size: 28px;
+  //   color: #8c939d;
+  //   width: 120px;
+  //   height: 120px;
+  //   line-height: 120px;
+  //   text-align: center;
+  // }
+  // .el-upload-list--picture-card .el-upload-list__item{
+  //   font-size: 28px;
+  //   color: #8c939d;
+  //   width: 120px;
+  //   height: 120px;
+  //   line-height: 120px;
+  //   text-align: center;
+  // }
+  .certImg {
+       .el-upload--picture-card i{
+          width: 100%;
+         height: 100%;
+         border: 1px dashed #c0ccda;
+        }
+       .el-upload--picture-card{
+        border:none;
+       }
+  }
+
+  .imageUrl{
+    .avatar-uploader{
+      width:148px;
+      height:148px;
+    }
+    .avatar{
+      width:148px;
+      height:148px;
+    }
+  }
+  /*Dialog 对话框*/
+  .index_tc{
+    .el-dialog__body{
+      padding:0;
+    }
+    .compon_p{
+      padding:10px 20px;
+    }
+    .tc_titel{
+      font-size: 18px;
+      color: #434343;
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom:1px solid #ddd;
+      height: 40px;
+      margin-top: -10px;
+      position: relative;
+      &:before{
+        content:' ';
+        background:url(../static/images/cmp_tu2.png);
+        width:20px;
+        height:20px;
+        position: absolute;
+        left:220px;
+        top:0px;
+      }
+    }
+    p{
+      text-align:left;
+      &.cp_1{
+        text-indent:2em;
+        margin-top: 10px;
+        line-height:28px;
+      }
+    }
+    .el-dialog__footer{
+      border-top:1px solid #E5E5E5;
+      background: #F8F9FB;
+      padding-top:20px;
+      text-align: center;
+    }
+    .el-button--primary{
+      width:170px;
+      background-color:#6F7DD8;
+    }
+    .com_qh{
+      width:350px;
+      margin:0 auto;
+
+    }
+    .tu_img{
+      height: 140px;
+      p{
+        margin:10px 0 15px 10px;
+      }
+      li{
+        float: left;
+        font-size:12px;
+        text-align: center;
+        &.cmp_mar{
+          margin:0 21px 0 11px;
+        }
+      }
+    }
+    .com_btn{
+      text-align: center;
+      height: 70px;
+      margin-top: 15px;
+    }
+    .el-tabs__nav{
+      margin-left: 120px;
+    }
+  }
+  .el-dialog__header{
+     border-bottom: none;
+    background: none;
+  }
+  .el-dialog__headerbtn{
+    z-index:999;
+  }
+  
+  
+}
+input{
+    font:inherit;
+}
+.table-strip-ls .el-checkbox__input{
+  top:0;
+}

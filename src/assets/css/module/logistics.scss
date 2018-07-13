@@ -1,0 +1,25 @@
+.logistics {
+    .el-checkbox__label {
+      width: 58%;
+      height: 30px;
+      line-height: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .el-checkbox__input {
+      top: -10px;
+    }
+  }
+  .table-strip-ls {
+    .el-checkbox__label {
+      height: 30px;
+      line-height: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .el-checkbox__input {
+      top: -10px;
+    }
+  }

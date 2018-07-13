@@ -1,0 +1,56 @@
+/*主色*/
+$color-primary:#4DA9E4;
+
+$color-primary-light: rgb(255, 100, 114);
+$color-primary-heavy: rgb(230, 55, 71);
+$color-radio: #f04134;
+$color-error: #f56c6c;
+$color-primary-selected: #EB6449;
+$color-border-ccc: #cccccc;//分割线深
+
+$color-contrast: #F65E5E;//主色
+$color-danger: #F76B69; //重要操作按钮颜色，如删除按钮
+$color-success: #67C23A; //成功的颜色 在线状态的颜色
+$color-btnbg-gray: #BABABA; //关闭按钮灰背景
+
+
+/*字体颜色*/
+$color-normal: #666;
+$color-heavy: #333;
+$color-light: #999;
+
+$color-second: #4a90e2;
+$color-bg-page: #ececf0;
+$color-split: #f0f0f0;
+$color-block-split: #e8e8e8;
+$color-border: #dcdcdc;
+$color-input-default: #fea2a2;
+$color-bg-dialog: #f5f5f5;
+$color-bg-dialog-heavy: #ececf0;
+$color-split-form: #fbfbfb;
+$color-pass: #7ED321;
+$color-warn: #FA830B;
+$color-split-border: #3f3f3f;
+$color-popover:#FBF4DC;
+// 设计稿基于1920px宽度设计
+$page-width: 1300px;
+$page-header: 80px;
+$page-sidebar: 145px;
+$page-content:1140px;
+$fontsize-elg: 16px;
+$fontsize-lg: 14px;
+$fontsize-normal: 12px;
+$fontsize-sm: 10px;
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+$color-text: #666;
+
+$color-primary1: #FFF5F0;
+$color-primary2: #FFD7C7;
+$color-primary3: #FFD7C7;
+$color-primary4: #FFB69E;
+$color-primary10:#59100C;

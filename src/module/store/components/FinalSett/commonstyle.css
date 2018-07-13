@@ -1,0 +1,57 @@
+
+ .orderTable .el-table .cell {
+ 	overflow: visible;
+ 	padding: 0;
+ }
+ .ao_orderContent .el-table td{
+  	padding: 0;
+  }
+.ao_orderContent .el-table th{
+  	padding: 0;
+  }
+  
+.ao_orderContent .cell{
+	text-align: center !important;
+	font-size: 12px;	
+}
+.ao_orderContent .is-leaf .cell{
+	background: #F5F5F5 !important;
+	height: 40px;
+	line-height: 40px;
+	margin: 0;
+	border: none;
+}
+.ao_orderContent .el-table__row{
+	border-left:1px solid gainsboro;
+	border-right:1px solid gainsboro;
+}
+.ao_orderContent .el-table__body-wrapper.is-scroll-left{
+	width: 974px;
+}
+
+  .ao_orderContent .el-table__body-wrapper{
+ 	overflow: hidden;
+ }
+  .ao_orderContent .el-table::after{
+	width: 0 !important;
+}
+ .ao_orderContent .el-table th.is-leaf:last-child{
+	border-right:none ;
+}
+ .ao_orderContent .el-table--fit th.gutter{
+	border: none;
+}
+ .ao_orderContent .el-form-item__error {
+	left: 10%;
+	top: 110%;
+}
+ .ao_orderContent .el-breadcrumb__separator{
+	color: #999999;
+}
+ .ao_orderContent .el-table th.is-leaf{
+	border-right:none ;
+}
+ 
+ .ao_orderContent  .el-date-editor .el-range__icon{
+ 	margin-top: -7px;
+ }

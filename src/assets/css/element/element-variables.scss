@@ -1,0 +1,16 @@
+/* 改变主题色变量 */
+$--color-primary: #4DA9E4;
+// $--color-primary: #00a2ae;
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '../../../../node_modules/element-ui/lib/theme-chalk/fonts';
+
+@import "../../../../node_modules/element-ui/packages/theme-chalk/src/index";
+
+
+.el-button--primary.is-plain:hover, .el-button--primary.is-plain:focus{
+    // background-color: #fff;
+    color: #F26749;
+    background: #fef0ed;
+    border-color:#fac2b6;
+}
